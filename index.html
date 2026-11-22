@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en"><head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EnglishQuest - Learn English A1 to C1</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial;background:#f6f7ff;color:#111}
+header{background:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;box-shadow:0 2px 10px #0001}
+.logo{font-weight:900;font-size:22px} .logo span{color:#6c5ce7}
+.btn{background:#6c5ce7;color:#fff;border:0;padding:10px 16px;border-radius:999px;font-weight:700;cursor:pointer}
+.btn2{background:#00b894} .btn3{background:#fff;color:#111;border:1px solid #ddd}
+.wrap{max-width:1000px;margin:auto;padding:18px}
+.hero{background:linear-gradient(135deg,#6c5ce7,#00b894);color:#fff;border-radius:20px;padding:28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:16px}
+.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 4px 14px #0001;cursor:pointer}
+.card h3{margin:6px 0}.badge{display:inline-block;background:#eee;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.lesson{background:#fff;border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;cursor:pointer}
+.qbox{background:#fff;border-radius:16px;padding:20px}.opt{display:block;width:100%;text-align:left;padding:12px;border:2px solid #eee;border-radius:12px;margin:8px 0;cursor:pointer;background:#fff;font-size:16px}
+.opt:hover{border-color:#6c5ce7}.correct{border-color:#00b894!important;background:#e6fffa}.wrong{border-color:#ff7675!important;background:#ffecec}
+.progress{height:10px;background:#eee;border-radius:999px;overflow:hidden}.progress i{display:block;height:100%;background:#00b894}
+input,select{padding:10px;border-radius:10px;border:1px solid #ddd;width:100%}
+</style></head><body>
+<header><div class="logo">🌍 English<span>Quest</span></div><div>XP: <b id="xp">0</b> | ⭐ <b id="stars">0</b></div><button class="btn" onclick="showHome()">Home</button></header>
+<div class="wrap" id="app"></div>
+<script>
+const LEVELS=[
+{A:"A1",name:"Beginner",desc:"Basic words, greetings, present simple",color:"#00b894",words:[["apple","olma"],["book","kitob"],["cat","mushuk"],["dog","it"],["house","uy"],["water","suv"],["school","maktab"],["friend","do'st"],["family","oila"],["sun","quyosh"]]},
+{A:"A2",name:"Elementary",desc:"Past simple, future, travel, shopping",color:"#0984e3",words:[["travel","sayohat"],["airport","aeroport"],["ticket","chipta"],["market","bozor"],["weather","ob-havo"],["health","salomatlik"],["job","ish"],["money","pul"],["city","shahar"],["food","ovqat"]]},
+{A:"B1",name:"Intermediate",desc:"Present perfect, conditionals, phrasal verbs",color:"#6c5ce7",words:[["achieve","erishmoq"],["environment","atrof-muhit"],["experience","tajriba"],["improve","yaxshilamoq"],["decide","qaror qilmoq"],["develop","rivojlantirmoq"],["opportunity","imkoniyat"],["society","jamiyat"],["education","ta'lim"],["success","muvaffaqiyat"]]},
+{A:"B2",name:"Upper-Intermediate",desc:"Advanced grammar, idioms, collocations",color:"#e17055",words:[["significant","muhim"],["nevertheless","shunga qaramay"],["consequence","oqibat"],["emphasize","ta'kidlamoq"],["maintain","saqlamoq"],["obtain","olmoq"],["require","talab qilmoq"],["consider","hisoblamoq"],["approach","yondashuv"],["benefit","foyda"]]},
+{A:"C1",name:"Advanced",desc:"Nuance, formal English, academic vocab",color:"#d63031",words:[["ubiquitous","hamma joyda"],["paradigm","namuna"],["inevitable","muqarrar"],["profound","chuqur"],["scrutinize","sinchiklab tekshirmoq"],["alleviate","yengillashtirmoq"],["contemplate","o'ylamoq"],["substantiate","tasdiqlamoq"],["encompass","qamrab olmoq"],["deteriorate","yomonlashmoq"]]}];
+const THEMES=["Greetings & Introductions","Numbers & Counting","Family & Friends","Food & Drinks","Animals","My Home","Body & Health","Clothes & Fashion","Weather & Seasons","Daily Routine","School & Study","Work & Jobs","Travel & Transport","Shopping & Money","Sports & Hobbies","Nature & Environment","Technology","Music & Movies","Grammar Focus","Vocabulary Booster","Speaking Practice","Listening & Reading","Writing Skills","Pronunciation","Idioms & Phrases"];
+let xp=0, stars=0, done={};
+function save(){document.getElementById('xp').textContent=xp;document.getElementById('stars').textContent=stars}
+function showHome(){
+ let h=`<div class="hero"><h1>Learn English A1 → C1 🇬🇧</h1><p>5 levels • 250 lessons • 7500 tests • Each lesson = 30 tests</p><p>Pick your level and start!</p></div><div class="grid">`;
+ LEVELS.forEach((L,i)=>{ h+=`<div class="card" onclick="showLevel(${i})"><span class="badge" style="background:${L.color};color:#fff">${L.A} • ${L.name}</span><h3>Level ${L.A}</h3><p>${L.desc}</p><p><b>50 Lessons</b> • <b>1500 Tests</b></p><button class="btn" style="background:${L.color}">Start ${L.A} →</button></div>`});
+ h+=`</div>`; document.getElementById('app').innerHTML=h;
+}
+function showLevel(i){
+ const L=LEVELS[i]; let h=`<button class="btn btn3" onclick="showHome()">← Back</button><h2>Level ${L.A} - ${L.name}</h2><p>${L.desc}</p><input id="search" placeholder="Search lesson... e.g. Food" oninput="filterLessons(${i})"><div id="lessons" style="margin-top:14px">`;
+ for(let n=1;n<=50;n++){ let t=THEMES[(n-1)%THEMES.length]+" "+(Math.ceil(n/THEMES.length)>1?Math.ceil(n/THEMES.length):""); let isDone=done[i+"-"+n];
+  h+=`<div class="lesson" onclick="startLesson(${i},${n})"><div><b>Lesson ${n}</b> — ${t} <span class="badge">${isDone?"✅ Done":"▶ Start"}</span></div><div>30 tests →</div></div>`;}
+ h+=`</div>`; document.getElementById('app').innerHTML=h;
+}
+function filterLessons(i){let q=document.getElementById('search').value.toLowerCase(); document.querySelectorAll('.lesson').forEach(el=>{el.style.display=el.textContent.toLowerCase().includes(q)?'flex':'none'})}
+let cur={level:0,lesson:1,qs:[],idx:0,score:0};
+function makeQuestions(li,n){
+ const L=LEVELS[li]; let qs=[];
+ const grammars=[
+  {q:"Choose the correct sentence:",o:["She ___ to school every day.","She go to school every day.","She goes to school every day.","She going to school every day."],a:2,ex:"With he/she, verb + s: She goes."},
+  {q:"What is the plural of 'child'?",o:["childs","childes","children","childrens"],a:2,ex:"Child → children (irregular)."},
+  {q:"I ___ a student.",o:["am","is","are","be"],a:0,ex:"I am, you are, he/she is."},
+  {q:"Choose the correct past form: Yesterday I ___ to the park.",o:["go","went","gone","goes"],a:1,ex:"Yesterday = Past Simple: went."},
+  {q:"Which is correct?",o:["Much books","Many books","Much book","Many book"],a:1,ex:"Many + countable plural."},
+ ];
+ for(let k=0;k<30;k++){
+  if(k<5){ let g=grammars[k%grammars.length]; qs.push({q:`Q${k+1}. ${g.q}`,opts:g.o,ans:g.a,ex:g.ex}); }
+  else if(k<15){ let w=L.words[(k+n)%L.words.length]; let others=L.words.filter(x=>x[0]!=w[0]).slice(0,3).map(x=>x[1]); let opts=[w[1],...others]; let ans=0; qs.push({q:`Q${k+1}. What does "${w[0]}" mean in Uzbek?`,opts,ans,ex:`${w[0]} = ${w[1]}`}); }
+  else if(k<22){ let w=L.words[(k*2+n)%L.words.length]; qs.push({q:`Q${k+1}. Fill in: I like ___ . (choose correct word for: ${w[1]})`,opts:[w[0],...L.words.filter(x=>x[0]!=w[0]).slice(0,3).map(x=>x[0])],ans:0,ex:`Correct: ${w[0]} = ${w[1]}`}); }
+  else { qs.push({q:`Q${k+1}. Choose the correct translation: "Men har kuni ingliz tili o'rganaman"`,opts:["I learn English every day.","I learns English every day.","I learning English every day.","I learn English yesterday."],ans:0,ex:"Every day = Present Simple."}); }
+ }
+ return qs;
+}
+function startLesson(li,n){ cur={level:li,lesson:n,qs:makeQuestions(li,n),idx:0,score:0}; showQ(); }
+function showQ(){
+ const L=LEVELS[cur.level]; const q=cur.qs[cur.idx];
+ let h=`<button class="btn btn3" onclick="showLevel(${cur.level})">← Lessons</button><h2>Level ${L.A} • Lesson ${cur.lesson}</h2><div class="progress"><i style="width:${(cur.idx/30)*100}%"></i></div><p>Question ${cur.idx+1} / 30 • Score: ${cur.score}</p><div class="qbox"><h3>${q.q}</h3>`;
+ q.opts.forEach((o,i)=>{ h+=`<button class="opt" onclick="answer(${i},this)">${o}</button>`});
+ h+=`<p id="feedback"></p><button class="btn" id="nextBtn" style="display:none" onclick="nextQ()">Next →</button></div>`; document.getElementById('app').innerHTML=h;
+}
+function answer(i,btn){
+ const q=cur.qs[cur.idx]; document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+ if(i===q.ans){cur.score++; btn.classList.add('correct'); document.getElementById('feedback').innerHTML="✅ Correct! "+q.ex; xp+=10;}
+ else{ btn.classList.add('wrong'); document.querySelectorAll('.opt')[q.ans].classList.add('correct'); document.getElementById('feedback').innerHTML="❌ Wrong. "+q.ex; }
+ document.getElementById('nextBtn').style.display='inline-block'; save();
+}
+function nextQ(){ cur.idx++; if(cur.idx>=30){ finish(); } else showQ(); }
+function finish(){
+ let pct=Math.round(cur.score/30*100); let passed=pct>=60; if(passed){stars++; done[cur.level+"-"+cur.lesson]=true; xp+=100;}
+ document.getElementById('app').innerHTML=`<div class="qbox" style="text-align:center"><h1>${passed?"🎉 Great job!":"💪 Try again!"}</h1><h2>${cur.score} / 30 • ${pct}%</h2><p>${passed?"Lesson completed! +100 XP bonus":"You need 60% to pass. Try again!"}</p><button class="btn" onclick="startLesson(${cur.level},${cur.lesson})">Retry</button> <button class="btn btn2" onclick="showLevel(${cur.level})">Lessons</button> ${cur.lesson<50?`<button class="btn" onclick="startLesson(${cur.level},${cur.lesson+1})">Next Lesson →</button>`:""}</div>`; save();
+}
+showHome(); save();
+</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
